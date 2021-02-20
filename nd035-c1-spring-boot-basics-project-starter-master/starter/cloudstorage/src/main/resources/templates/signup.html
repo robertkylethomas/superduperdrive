@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:th="https://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1, shrink-to-fit=no" name="viewport">
+
+  <link media="all" rel="stylesheet" th:href="@{/css/bootstrap.min.css}" type="text/css">
+
+  <title>Sign Up</title>
+</head>
+<body class="p-3 mb-2 bg-light text-black">
+<div class="container justify-content-center w-50 p-3" style="background-color: #eeeeee; margin-top: 5em;">
+  <div class="form-group">
+    <label><a th:href="@{/login}">Back to Login</a></label>
+  </div>
+
+  <h1 class="display-5">Sign Up</h1>
+  <form action="#" method="POST" th:action="@{/signup}" th:object="${user}">
+    <div class="alert alert-dark" th:if="${signupSuccess}">
+      You successfully signed up! Please continue to the <a>login</a> page.
+    </div>
+    <div class="alert alert-danger" th:if="${signupError}">
+      <span th:text="${signupError}"></span>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="inputFirstName">First Name</label>
+        <input class="form-control" id="inputFirstName" maxlength="20" name="firstname" placeholder="Enter First Name"
+               required th:field="*{firstname}" type="input">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="inputLastName">Last Name</label>
+        <input class="form-control" id="inputLastName" maxlength="20" name="lastname" placeholder="Enter Last Name"
+               required th:field="*{lastname}" type="input">
+      </div>
+    </div>
+    <div class="form-row">
+      <div class="form-group col-md-6">
+        <label for="inputUsername">Username</label>
+        <input class="form-control" id="inputUsername" maxlength="20" name="username" placeholder="Enter Username"
+               required th:field="*{username}" type="input">
+      </div>
+      <div class="form-group col-md-6">
+        <label for="inputPassword">Password</label>
+        <input class="form-control" id="inputPassword" maxlength="20" name="password" placeholder="Enter Password"
+               required th:field="*{password}" type="password">
+      </div>
+    </div>
+    <button class="btn btn-primary" type="submit">Sign Up</button>
+  </form>
+</div>
+</body>
+</html>
