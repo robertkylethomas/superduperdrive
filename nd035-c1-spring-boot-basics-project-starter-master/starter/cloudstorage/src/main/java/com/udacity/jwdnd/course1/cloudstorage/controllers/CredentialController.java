@@ -1,7 +1,8 @@
 package com.udacity.jwdnd.course1.cloudstorage.controllers;
 
-import com.udacity.jwdnd.course1.cloudstorage.models.NoteModel;
-import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
+
+import com.udacity.jwdnd.course1.cloudstorage.models.CredentialModel;
+import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -10,27 +11,27 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 @Controller
-public class NoteController {
+public class CredentialController {
 
-  private final NoteService noteService;
+  private final CredentialService credentialService;
 
-  public NoteController(NoteService noteService) {
-    this.noteService = noteService;
+  public CredentialController(CredentialService credentialService) {
+    this.credentialService = credentialService;
   }
 
-
-  @PostMapping("/notes")
-  public String postNote(@ModelAttribute("note") NoteModel note, Model model) {
+  // TODO dont hardcaode the user
+  @PostMapping("/credential")
+  public String postNote(@ModelAttribute("credential") CredentialModel credential, Model model) {
     // TODO remove hardcoded userid
-    note.setUserid(1);
+    credential.setUserid(1);
     String error = null;
     int rowsAdded = 0;
-
-    if (note.getNoteid() == null) {
-      rowsAdded = noteService.createNote(note);
+    System.out.println(model);
+    if (true) {
+      rowsAdded = credentialService.createCredential(credential);
     } else {
       // TODO remove hardcoded userid
-      rowsAdded = noteService.updateNote(note, 1);
+      rowsAdded = credentialService.updateCredential(credential, 1);
     }
 
     if (rowsAdded <= 0) {
@@ -41,11 +42,11 @@ public class NoteController {
     return "result";
   }
 
-  // #TODO remove hard coded userid
-  @GetMapping("/notes/delete/{id}")
+  // TODO dont hardcode the the userid
+  @GetMapping("/credentials/delete/{id}")
   public String deleteNote(@PathVariable("id") int id, Model model) {
     String error = null;
-    int rowsDeleted = noteService.deleteNote(id, 1);
+    int rowsDeleted = credentialService.deleteCredential(id, 1);
     if (rowsDeleted <= 0) {
       model.addAttribute("failure", true);
     } else {
@@ -53,5 +54,4 @@ public class NoteController {
     }
     return "result";
   }
-
 }

@@ -38,7 +38,7 @@ public class NoteModel {
   }
 
   public Integer getUserid() {
-    return 1;
+    return userid;
   }
 
   public void setUserid(Integer userid) {

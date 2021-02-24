@@ -15,23 +15,19 @@ public class NoteService {
     this.noteMapper = noteMapper;
   }
 
-  public NoteModel getNote(int noteid) {
-    return noteMapper.getNote(noteid);
-  }
-
   public ArrayList<NoteModel> getAllNotesForUser(Integer userid) {
     return noteMapper.getNotesForUser(userid);
   }
 
-  public int deleteNote(Integer noteid) {
-    return noteMapper.deleteNote(noteid);
+  public int deleteNote(Integer noteid, Integer userid) {
+    return noteMapper.deleteNote(noteid, userid);
+  }
+
+  public int updateNote(NoteModel note, Integer userid) {
+    return noteMapper.updateNote(note, userid);
   }
 
   public int createNote(NoteModel note) {
-    System.out.println("================");
-    System.out.println("This is the note");
-    System.out.println(note);
-    System.out.println("================");
     return noteMapper.insertNote(new NoteModel(
       null,
       note.getNotetitle(),

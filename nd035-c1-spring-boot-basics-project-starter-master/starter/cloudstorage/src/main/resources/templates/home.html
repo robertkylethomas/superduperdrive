@@ -32,10 +32,10 @@
           <div class="container">
             <div class="row" style="margin: 1em;">
               <div class="col-sm-2">
-                <label for="fileUpload">Upload a New File:</label>
+                <label for="file">Upload a New File:</label>
               </div>
               <div class="col-sm-6">
-                <input class="form-control-file" id="fileUpload" name="fileUpload" type="file">
+                <input class="form-control-file" id="file" name="file" type="file">
               </div>
               <div class="col-sm-4">
                 <button class="btn btn-dark" type="submit">Upload</button>
@@ -106,7 +106,7 @@
               </div>
               <div class="modal-body">
                 <form action="#" method="POST" th:action="@{/notes}">
-                  <input name="noteid" type="hidden">
+                  <input id="note-id" name="noteid" type="hidden">
                   <div class="form-group">
                     <label class="col-form-label" for="note-title">Title</label>
                     <input class="form-control" id="note-title" maxlength="20" name="notetitle" required type="text">
@@ -133,7 +133,7 @@
         </button>
 
         <div class="table-responsive">
-          <table class="table table-striped" id="credentialTable" th:object="${credentials}">
+          <table class="table table-striped" id="credentialTable">
             <thead>
             <tr>
               <th scope="col" style="width: 20%"></th>
@@ -143,14 +143,15 @@
             </tr>
             </thead>
             <tbody>
-            <tr>
+            <tr th:each="credential : ${allCredentials}">
               <td>
                 <button class="btn btn-success" type="button">Edit</button>
-                <a class="btn btn-danger">Delete</a>
+                <a class="btn btn-danger"
+                   th:href="@{/credentials/delete/{id}(id=${credential.credentialid})}">Delete</a>
               </td>
-              <th scope="row">Example Credential URL</th>
-              <td>Example Credential Username</td>
-              <td>Example Credential Password</td>
+              <th scope="row" th:text="${credential.url}"></th>
+              <td th:text="${credential.username}">Example Credential Username</td>
+              <td th:text="${credential.password}">Example Credential Password</td>
             </tr>
             </tbody>
           </table>
@@ -167,20 +168,20 @@
                 </button>
               </div>
               <div class="modal-body">
-                <form action="#" method="POST">
+                <form action="#" method="POST" th:action="@{/credential}" th:object="${credential}">
                   <input id="credential-id" name="credentialId" type="hidden">
                   <div class="form-group">
-                    <label class="col-form-label" for="note-title">URL</label>
-                    <input class="form-control" id="credential-url" maxlength="100" name="url" required type="text">
+                    <label class="col-form-label" for="url">URL</label>
+                    <input class="form-control" id="url" maxlength="100" name="url" required type="text">
                   </div>
                   <div class="form-group">
-                    <label class="col-form-label" for="note-title">Username</label>
-                    <input class="form-control" id="credential-username" maxlength="30" name="username" required
+                    <label class="col-form-label" for="username">Username</label>
+                    <input class="form-control" id="username" maxlength="30" name="username" required
                            type="text">
                   </div>
                   <div class="form-group">
-                    <label class="col-form-label" for="note-title">Password</label>
-                    <input class="form-control" id="credential-password" maxlength="30" name="password" required
+                    <label class="col-form-label" for="password">Password</label>
+                    <input class="form-control" id="password" maxlength="30" name="password" required
                            type="text">
                   </div>
                   <button class="d-none" id="credentialSubmit" type="submit"></button>

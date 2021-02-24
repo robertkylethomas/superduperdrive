@@ -11,13 +11,14 @@ public interface NoteMapper {
   @Select("SELECT * FROM NOTES WHERE userid = #{userid}")
   ArrayList<NoteModel> getNotesForUser(Integer userid);
 
-  @Select("SELECT * FROM NOTES WHERE noteid = #{noteid}")
-  NoteModel getNote(Integer noteid);
+  @Delete("DELETE FROM NOTES WHERE noteid = #{noteid} AND userid = #{userid}")
+  int deleteNote(Integer noteid, Integer userid);
 
-  @Delete("DELETE FROM NOTES WHERE noteid = #{noteid}")
-  int deleteNote(Integer noteid);
+  @Update("UPDATE NOTES SET noteTitle = #{notetitle}, noteDescription = #{notedescription} where noteid = #{noteid} AND userid = #{userid}")
+  int updateNote(NoteModel note, Integer userid);
 
-  @Insert("INSERT INTO NOTES(notetitle, notedescription, userid) VALUES" +
+  @Insert("INSERT INTO NOTES(notetitle, notedescription, userid) " +
+    "VALUES" +
     "( #{notetitle}, #{notedescription}, #{userid})"
   )
   @Options(useGeneratedKeys = true, keyProperty = "noteid")
