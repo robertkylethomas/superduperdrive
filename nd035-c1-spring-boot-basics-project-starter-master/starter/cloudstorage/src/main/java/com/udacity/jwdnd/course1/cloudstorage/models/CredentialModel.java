@@ -9,13 +9,13 @@ public class CredentialModel {
   private Integer userid;
 
   public CredentialModel(Integer credentialid, String url, String username, String key, String password, Integer userid) {
+    this.credentialid = credentialid;
     this.url = url;
     this.username = username;
     this.key = key;
     this.password = password;
     this.userid = userid;
   }
-
 
   public Integer getCredentialid() {
     return credentialid;
@@ -24,7 +24,6 @@ public class CredentialModel {
   public void setCredentialid(Integer credentialid) {
     this.credentialid = credentialid;
   }
-
 
   public String getUrl() {
     return url;
@@ -68,11 +67,12 @@ public class CredentialModel {
 
   @Override
   public String toString() {
-    return "CredentialMapper{" +
-      "url='" + url + '\'' +
+    return "CredentialModel{" +
+      "credentialid=" + credentialid +
+      ", url='" + url + '\'' +
       ", username='" + username + '\'' +
       ", key='" + key + '\'' +
-      ", keypassword='" + password + '\'' +
+      ", password='" + password + '\'' +
       ", userid=" + userid +
       '}';
   }

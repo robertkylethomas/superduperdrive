@@ -1,7 +1,9 @@
 package com.udacity.jwdnd.course1.cloudstorage;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -30,12 +32,6 @@ class CloudStorageApplicationTests {
     if (this.driver != null) {
       driver.quit();
     }
-  }
-
-  @Test
-  public void getLoginPage() {
-    driver.get("http://localhost:" + this.port + "/login");
-    Assertions.assertEquals("Login", driver.getTitle());
   }
 
 }

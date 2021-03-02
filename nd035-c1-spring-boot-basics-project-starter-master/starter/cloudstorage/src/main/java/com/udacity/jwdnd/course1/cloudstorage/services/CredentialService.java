@@ -22,12 +22,15 @@ public class CredentialService {
     return credentialMapper.deleteCredential(credentialid, userid);
   }
 
-  public int updateCredential(CredentialModel credentialModel, Integer userid) {
-    return credentialMapper.updateCredential(credentialModel, userid);
+  public int updateCredential(CredentialModel credential) {
+    System.out.println("=========CREDENTIAL=======================");
+    System.out.println(credential);
+    System.out.println("==========================================");
+    return this.credentialMapper.updateCredentials(credential);
   }
 
   public int createCredential(CredentialModel credentialModel) {
-    return credentialMapper.insertCredential(new CredentialModel(
+    return this.credentialMapper.insertCredential(new CredentialModel(
       null,
       credentialModel.getUrl(),
       credentialModel.getUsername(),

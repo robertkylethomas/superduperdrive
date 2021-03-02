@@ -27,11 +27,7 @@ public class UserService {
 
 
   public int createUser(UserModel user) {
-    SecureRandom random = new SecureRandom();
-    // Using a byte string because strings are immutable
-    byte[] salt = new byte[16];
-    random.nextBytes(salt);
-    String encodedSalt = Base64.getEncoder().encodeToString(salt);
+    String encodedSalt = getEncodedSalt();
     String hashedPassword = hashService.getHashedValue(user.getPassword(), encodedSalt);
 
     return userMapper.insert(new UserModel(
@@ -41,5 +37,13 @@ public class UserService {
       hashedPassword,
       user.getFirstname(),
       user.getLastname()));
+  }
+
+  public String getEncodedSalt() {
+    SecureRandom random = new SecureRandom();
+    byte[] salt = new byte[16];
+    random.nextBytes(salt);
+    String encodedSalt = Base64.getEncoder().encodeToString(salt);
+    return encodedSalt;
   }
 }

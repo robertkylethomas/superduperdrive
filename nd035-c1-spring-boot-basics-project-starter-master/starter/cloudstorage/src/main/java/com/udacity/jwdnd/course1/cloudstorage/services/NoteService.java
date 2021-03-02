@@ -24,7 +24,7 @@ public class NoteService {
   }
 
   public int updateNote(NoteModel note, Integer userid) {
-    return noteMapper.updateNote(note, userid);
+    return noteMapper.updateNote(note);
   }
 
   public int createNote(NoteModel note) {

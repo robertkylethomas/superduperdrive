@@ -11,13 +11,13 @@ import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
+
 @Service
 public class EncryptionService {
   private final Logger logger = LoggerFactory.getLogger(EncryptionService.class);
 
   public String encryptValue(String data, String key) {
     byte[] encryptedValue = null;
-
     try {
       Cipher cipher = Cipher.getInstance("AES/ECB/PKCS5Padding");
       SecretKey secretKey = new SecretKeySpec(key.getBytes(), "AES");

@@ -25,11 +25,16 @@ public class NoteController {
     note.setUserid(1);
     String error = null;
     int rowsAdded = 0;
-
+    System.out.println(note);
     if (note.getNoteid() == null) {
       rowsAdded = noteService.createNote(note);
     } else {
       // TODO remove hardcoded userid
+      System.out.println("++++++++++++++++++++++++++++");
+      System.out.println("++++++++++++++++++++++++++++");
+      System.out.println(note);
+      System.out.println("++++++++++++++++++++++++++++");
+      System.out.println("++++++++++++++++++++++++++++");
       rowsAdded = noteService.updateNote(note, 1);
     }
 
