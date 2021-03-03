@@ -2,10 +2,12 @@ package com.udacity.jwdnd.course1.cloudstorage.controllers;
 
 import com.udacity.jwdnd.course1.cloudstorage.models.FileModel;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
+import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,32 +23,39 @@ import java.io.IOException;
 public class FileController {
 
   FileService fileService;
+  UserService userService;
 
-  public FileController(FileService fileService) {
+  public FileController(FileService fileService, UserService userService) {
     this.fileService = fileService;
+    this.userService = userService;
   }
-  // TODO user cannot upload two files with the same name
+
   @PostMapping("/file")
-  public String handleFileUpload(@RequestParam("file") MultipartFile file, Model model) throws IOException {
-    fileService.createFile(file, 1);
-    model.addAttribute("success", true);
+  public String handleFileUpload(Authentication auth, @RequestParam("file") MultipartFile file, Model model) throws IOException {
+    int userId = userService.getUser(auth.getName()).getUserid();
+    Boolean uploadedSuccesfully = fileService.createFile(file, userId);
+    if (uploadedSuccesfully) {
+      model.addAttribute("success", true);
+
+    } else {
+      model.addAttribute("failure", true);
+    }
     return "/result";
   }
 
   @GetMapping("/file/delete/{id}")
-  public String deleteFile(@PathVariable("id") Integer id, Model model) {
-    // TODO CHANTGE USER NAE,
+  public String deleteFile(Authentication auth, @PathVariable("id") Integer id, Model model) {
+
+    int userId = userService.getUser(auth.getName()).getUserid();
     fileService.deleteFile(id, 1);
     model.addAttribute("success", true);
     return "/result";
   }
 
   @GetMapping("/file/download/{id}")
-  public ResponseEntity<ByteArrayResource> downloadFile(@PathVariable("id") Integer id, Model model) {
-
-    // TODO agian with the hardcoded ids
-    FileModel fm = fileService.getSingleFile(id, 1);
-
+  public ResponseEntity<ByteArrayResource> downloadFile(Authentication auth, @PathVariable("id") Integer id, Model model) {
+    int userId = userService.getUser(auth.getName()).getUserid();
+    FileModel fm = fileService.getSingleFile(id, userId);
     return ResponseEntity.ok()
       .contentType(MediaType.parseMediaType(fm.getContenttype()))
       .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fm.getFilename() + "\"")

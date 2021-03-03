@@ -14,6 +14,9 @@ public interface FileMapper {
   @Select("SELECT * FROM FILES WHERE fileid = #{fileid} AND userid = #{userid}")
   FileModel getSingleFiles(Integer fileid, Integer userid);
 
+  @Select("SELECT COUNT(*) FROM FILES WHERE filename = #{filename}")
+  int findExistingFileNames(String filename);
+
   @Delete("DELETE FROM FILES WHERE fileid = #{fileid} and userid = #{userid}")
   Integer deletedFile(int fileid, int userid);
 

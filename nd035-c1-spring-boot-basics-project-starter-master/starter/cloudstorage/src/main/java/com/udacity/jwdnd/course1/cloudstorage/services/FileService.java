@@ -19,7 +19,7 @@ public class FileService {
     this.fileMapper = fileMapper;
   }
 
-  public void createFile(MultipartFile multipartFile, Integer userid) {
+  public boolean createFile(MultipartFile multipartFile, Integer userid) {
 
     try {
       InputStream fis = multipartFile.getInputStream();
@@ -36,23 +36,30 @@ public class FileService {
       String contenttype = multipartFile.getContentType();
       String filesize = String.valueOf(multipartFile.getSize());
 
-      // TODO dont hardcode user id
-      fileMapper.insert(new FileModel(
-        null,
-        filename,
-        contenttype,
-        filesize,
-        1,
-        filedata));
+      int fileNames = fileMapper.findExistingFileNames(filename);
+      System.out.println(fileNames);
+      if (fileNames == 0) {
+        fileMapper.insert(new FileModel(
+          null,
+          filename,
+          contenttype,
+          filesize,
+          userid,
+          filedata));
+        return true;
+      } else {
+        return false;
+      }
 
     } catch (IOException ioe) {
-      System.out.println(ioe);
+      return false;
+
     }
-    System.out.println("I THINK IT WORKED");
+
 
   }
 
-  // TODO change userid
+
   public List<FileModel> getAllFiles(Integer userid) {
     return fileMapper.getAllFiles(userid);
   }

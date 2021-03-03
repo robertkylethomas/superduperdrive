@@ -3,36 +3,37 @@ package com.udacity.jwdnd.course1.cloudstorage.controllers;
 import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
 import com.udacity.jwdnd.course1.cloudstorage.services.FileService;
 import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
+import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class HomeController {
   private final NoteService noteService;
   private final CredentialService credentialService;
   private final FileService fileService;
+  private final UserService userService;
 
-  public HomeController(NoteService noteService, CredentialService credentialService, FileService fileService) {
+  public HomeController(
+    NoteService noteService,
+    CredentialService credentialService,
+    FileService fileService,
+    UserService userService) {
     this.noteService = noteService;
     this.credentialService = credentialService;
     this.fileService = fileService;
+    this.userService = userService;
   }
 
   @GetMapping("/home")
-  public String getHome(Model model) {
-    // TODO stop hardcoding the userid
-    model.addAttribute("allFiles", fileService.getAllFiles(1));
-    model.addAttribute("allNotes", noteService.getAllNotesForUser(1));
-    model.addAttribute("allCredentials", credentialService.getAllCredentialsForUser(1));
-    return "home";
-  }
+  public String getHome(Authentication auth, Model model) {
+    int userId = userService.getUser(auth.getName()).getUserid();
 
-  @RequestMapping(value = {"/"}, method = RequestMethod.GET)
-  public ModelAndView projectBase() {
-    return new ModelAndView("redirect:/home");
+    model.addAttribute("allFiles", fileService.getAllFiles(userId));
+    model.addAttribute("allNotes", noteService.getAllNotesForUser(userId));
+    model.addAttribute("allCredentials", credentialService.getAllCredentialsForUser(userId));
+    return "home";
   }
 }

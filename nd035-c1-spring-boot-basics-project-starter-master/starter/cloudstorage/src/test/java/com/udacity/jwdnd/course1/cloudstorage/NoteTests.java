@@ -16,7 +16,7 @@ import java.util.List;
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class NoteTests extends CloudStorageApplicationTests {
-
+  LoginTests loginTests = new LoginTests();
 
   @LocalServerPort
   private int port;
@@ -41,8 +41,54 @@ public class NoteTests extends CloudStorageApplicationTests {
     }
   }
 
-  public List<WebElement> createNote() {
-    driver.get("http://localhost:" + this.port);
+  public void signUpUser() throws InterruptedException {
+    driver.get("http://localhost:" + this.port + "/signup");
+
+    WebDriverWait wait = new WebDriverWait(driver, 10);
+    WebElement firstName = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("firstname")));
+    WebElement lastName = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("lastname")));
+    WebElement username = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("username")));
+    WebElement password = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("password")));
+
+    firstName.clear();
+    lastName.clear();
+    username.clear();
+    password.clear();
+
+    firstName.sendKeys("Test");
+    lastName.sendKeys("User");
+    username.sendKeys("testuser");
+    password.sendKeys("testuser");
+
+    WebElement signUpButton = wait.until(ExpectedConditions.visibilityOfElementLocated(new By.ByCssSelector("button[type='submit']")));
+    signUpButton.click();
+
+  }
+
+  public void loginUser() throws InterruptedException {
+
+    driver.get("http://localhost:" + this.port + "/login");
+
+    WebDriverWait wait = new WebDriverWait(driver, 10);
+    WebElement username = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("username")));
+    WebElement password = wait.until(ExpectedConditions.visibilityOfElementLocated(By.name("password")));
+
+    username.clear();
+    password.clear();
+
+    username.sendKeys("testuser");
+    password.sendKeys("testuser");
+
+    WebElement loginButton = wait.until(ExpectedConditions.visibilityOfElementLocated(new By.ByCssSelector("button[type='submit']")));
+    loginButton.click();
+
+  }
+
+  public List<WebElement> createNote() throws InterruptedException {
+    signUpUser();
+    loginUser();
+
+    driver.get("http://localhost:" + this.port + "/home");
     WebElement notesTab = driver.findElement(By.id("nav-notes-tab"));
     notesTab.click();
     WebElement uploadNoteButton = driver.findElement(By.id("add-note"));
@@ -61,7 +107,7 @@ public class NoteTests extends CloudStorageApplicationTests {
     WebElement noteSubmit = driver.findElement(new By.ByCssSelector("#noteModal > div > div > div.modal-footer > button.btn.btn-primary"));
     noteSubmit.click();
 
-    driver.get("http://localhost:" + this.port);
+    driver.get("http://localhost:" + this.port + "/home");
 
     WebElement notesTab2 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-notes-tab")));
     notesTab2.click();
@@ -73,7 +119,7 @@ public class NoteTests extends CloudStorageApplicationTests {
   public void createNoteTest() throws InterruptedException {
     List<WebElement> notes = createNote();
     Assertions.assertEquals(notes.size(), 1);
-    Thread.sleep(1000);
+    Thread.sleep(5000);
   }
 
 
@@ -98,7 +144,7 @@ public class NoteTests extends CloudStorageApplicationTests {
     WebElement noteSubmit = driver.findElement(new By.ByCssSelector("#noteModal > div > div > div.modal-footer > button.btn.btn-primary"));
     noteSubmit.click();
 
-    driver.get("http://localhost:" + this.port);
+    driver.get("http://localhost:" + this.port + "/home");
 
     WebElement notesTab2 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-notes-tab")));
     notesTab2.click();
@@ -124,7 +170,7 @@ public class NoteTests extends CloudStorageApplicationTests {
     WebElement deletelink = wait.until(ExpectedConditions.visibilityOfElementLocated(new By.ByCssSelector("#notesTable > tbody > tr > td:nth-child(1) > a")));
     deletelink.click();
 
-    driver.get("http://localhost:" + this.port);
+    driver.get("http://localhost:" + this.port + "/home");
 
     WebElement notesTab2 = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("nav-notes-tab")));
     notesTab2.click();

@@ -23,9 +23,6 @@ public class CredentialService {
   }
 
   public int updateCredential(CredentialModel credential) {
-    System.out.println("=========CREDENTIAL=======================");
-    System.out.println(credential);
-    System.out.println("==========================================");
     return this.credentialMapper.updateCredentials(credential);
   }
 

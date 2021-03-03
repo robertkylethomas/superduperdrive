@@ -19,11 +19,11 @@ public class NoteService {
     return noteMapper.getNotesForUser(userid);
   }
 
-  public int deleteNote(Integer noteid, Integer userid) {
-    return noteMapper.deleteNote(noteid, userid);
+  public int deleteNote(Integer noteid) {
+    return noteMapper.deleteNote(noteid);
   }
 
-  public int updateNote(NoteModel note, Integer userid) {
+  public int updateNote(NoteModel note) {
     return noteMapper.updateNote(note);
   }
 

@@ -5,6 +5,7 @@ import com.udacity.jwdnd.course1.cloudstorage.models.CredentialModel;
 import com.udacity.jwdnd.course1.cloudstorage.services.CredentialService;
 import com.udacity.jwdnd.course1.cloudstorage.services.HashService;
 import com.udacity.jwdnd.course1.cloudstorage.services.UserService;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,11 +25,11 @@ public class CredentialController {
     this.userService = userService;
   }
 
-  // TODO dont hardcaode the user
+
   @PostMapping("/credential")
-  public String postNote(CredentialModel credential, Model model) {
-    // TODO remove hardcoded userid
-    credential.setUserid(1);
+  public String postNote(Authentication auth, CredentialModel credential, Model model) {
+    int userId = userService.getUser(auth.getName()).getUserid();
+    credential.setUserid(userId);
     String error = null;
     int rowsAdded = 0;
     credential.setKey(this.hashService.getHashedValue(credential.getPassword(), this.userService.getEncodedSalt()));
@@ -36,8 +37,7 @@ public class CredentialController {
     if (credential.getCredentialid() == null) {
       rowsAdded = credentialService.createCredential(credential);
     } else {
-      // TODO remove hardcoded userid
-     rowsAdded = credentialService.updateCredential(credential);
+      rowsAdded = credentialService.updateCredential(credential);
     }
     if (rowsAdded <= 0) {
       model.addAttribute("failure", "Note not uploaded");
@@ -47,7 +47,7 @@ public class CredentialController {
     return "result";
   }
 
-  // TODO dont hardcode the the userid
+
   @GetMapping("/credentials/delete/{id}")
   public String deleteNote(@PathVariable("id") int id, Model model) {
     String error = null;

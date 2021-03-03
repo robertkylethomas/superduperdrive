@@ -12,7 +12,7 @@ public interface NoteMapper {
   ArrayList<NoteModel> getNotesForUser(Integer userid);
 
   @Delete("DELETE FROM NOTES WHERE noteid = #{noteid} AND userid = #{userid}")
-  int deleteNote(Integer noteid, Integer userid);
+  int deleteNote(Integer noteid);
 
   @Update("UPDATE NOTES SET noteTitle = #{notetitle}, noteDescription = #{notedescription} where noteid = #{noteid}")
   int updateNote(NoteModel note);
