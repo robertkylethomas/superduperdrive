@@ -33,15 +33,11 @@ public class CredentialController {
     int rowsAdded = 0;
     credential.setKey(this.hashService.getHashedValue(credential.getPassword(), this.userService.getEncodedSalt()));
     System.out.println(credential);
-    // TODO fix this random true
     if (credential.getCredentialid() == null) {
       rowsAdded = credentialService.createCredential(credential);
     } else {
       // TODO remove hardcoded userid
-      System.out.println("===================================");
-      System.out.println(credential);
-      System.out.println("===================================");
-      rowsAdded = credentialService.updateCredential(credential);
+     rowsAdded = credentialService.updateCredential(credential);
     }
     if (rowsAdded <= 0) {
       model.addAttribute("failure", "Note not uploaded");

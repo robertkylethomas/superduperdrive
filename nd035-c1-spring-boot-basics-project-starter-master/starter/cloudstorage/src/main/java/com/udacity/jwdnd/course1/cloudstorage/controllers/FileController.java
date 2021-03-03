@@ -25,7 +25,6 @@ public class FileController {
   public FileController(FileService fileService) {
     this.fileService = fileService;
   }
-
   // TODO user cannot upload two files with the same name
   @PostMapping("/file")
   public String handleFileUpload(@RequestParam("file") MultipartFile file, Model model) throws IOException {
@@ -36,7 +35,7 @@ public class FileController {
 
   @GetMapping("/file/delete/{id}")
   public String deleteFile(@PathVariable("id") Integer id, Model model) {
-    // TODO CHANTGE ISER NAE,
+    // TODO CHANTGE USER NAE,
     fileService.deleteFile(id, 1);
     model.addAttribute("success", true);
     return "/result";

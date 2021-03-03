@@ -6,6 +6,7 @@ import org.springframework.security.config.annotation.authentication.builders.Au
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
 @EnableWebSecurity
@@ -26,32 +27,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
   @Override
   protected void configure(HttpSecurity http) throws Exception {
     // Permit all requests all from signup, login pages and CSS and JS files
+    http
+      .authorizeRequests()
+      .antMatchers("/signup/**", "/css/**", "/js/**").permitAll()
+      .anyRequest().authenticated();
 
-//    http
-//      .authorizeRequests()
-//        .antMatchers("/signup", "/css/**", "/js/**", "/").permitAll()
-//        .anyRequest()
-//        .authenticated();
-//
-//    // set the login form
-//    http
-//        .formLogin()
-//        .loginPage("/login")
-//        .permitAll();
-//
-//    // where to go after you log in successfully
-//    http.formLogin()
-//        .defaultSuccessUrl("/", true);
-//
-//    http
-//        .logout()
-//        .invalidateHttpSession(true)
-//        .clearAuthentication(true)
-//        .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
-//        .logoutSuccessUrl("/login").permitAll();
+    // set the login form
+    http
+      .formLogin()
+      .loginPage("/login")
+      .defaultSuccessUrl("/home", true);
 
-    http.csrf().disable().authorizeRequests().anyRequest().permitAll();
-
+    http
+      .logout()
+      .invalidateHttpSession(true)
+      .clearAuthentication(true)
+      .logoutRequestMatcher(new AntPathRequestMatcher("/logout"))
+      .logoutSuccessUrl("/login").permitAll();
 
   }
 }

@@ -6,6 +6,9 @@ import com.udacity.jwdnd.course1.cloudstorage.services.NoteService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class HomeController {
@@ -19,15 +22,17 @@ public class HomeController {
     this.fileService = fileService;
   }
 
-  @GetMapping("/")
+  @GetMapping("/home")
   public String getHome(Model model) {
     // TODO stop hardcoding the userid
     model.addAttribute("allFiles", fileService.getAllFiles(1));
     model.addAttribute("allNotes", noteService.getAllNotesForUser(1));
     model.addAttribute("allCredentials", credentialService.getAllCredentialsForUser(1));
-    System.out.println(model);
     return "home";
   }
 
-
+  @RequestMapping(value = {"/"}, method = RequestMethod.GET)
+  public ModelAndView projectBase() {
+    return new ModelAndView("redirect:/home");
+  }
 }

@@ -22,7 +22,6 @@ public class AuthenticationService implements AuthenticationProvider {
 
   @Override
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
-
     String username = authentication.getName();
     String password = authentication.getCredentials().toString();
 
@@ -34,6 +33,7 @@ public class AuthenticationService implements AuthenticationProvider {
         return new UsernamePasswordAuthenticationToken(username, password, new ArrayList<>());
       }
     }
+
     return null;
   }
 
