@@ -32,7 +32,6 @@ public class NoteController {
     if (note.getNoteid() == null) {
       rowsAdded = noteService.createNote(note);
     } else {
-
       rowsAdded = noteService.updateNote(note);
     }
 

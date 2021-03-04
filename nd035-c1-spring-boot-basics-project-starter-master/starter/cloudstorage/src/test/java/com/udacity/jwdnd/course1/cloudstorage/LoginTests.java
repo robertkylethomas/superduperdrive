@@ -11,9 +11,9 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.web.server.LocalServerPort;
 
+
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 public class LoginTests extends CloudStorageApplicationTests {
-
 
   @LocalServerPort
   private int port;
@@ -78,7 +78,20 @@ public class LoginTests extends CloudStorageApplicationTests {
     password.sendKeys("testuser");
 
     WebElement loginButton = wait.until(ExpectedConditions.visibilityOfElementLocated(new By.ByCssSelector("button[type='submit']")));
+
     loginButton.click();
+
+  }
+
+
+  @Test
+  public void attemptGettingToHome() throws InterruptedException {
+
+    driver.get("http://localhost:" + this.port + "/home");
+
+    Assertions.assertNotEquals("http://localhost:" + this.port + "/home", driver.getCurrentUrl());
+
+    Thread.sleep(1000);
 
   }
 
@@ -91,7 +104,8 @@ public class LoginTests extends CloudStorageApplicationTests {
     WebDriverWait wait = new WebDriverWait(driver, 10);
     WebElement logoutButton = wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("logoutButton")));
 
-    logoutButton.click();
+
+    logoutButton.submit();
 
     driver.get("http://localhost:" + this.port + "/home");
 
